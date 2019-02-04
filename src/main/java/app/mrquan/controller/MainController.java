@@ -2,6 +2,7 @@ package app.mrquan.controller;
 
 import app.mrquan.mapper.PersonMapper;
 import app.mrquan.pojo.Person;
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,7 +25,13 @@ public class MainController {
 
     @ResponseBody
     @RequestMapping(value = "/insert",method = RequestMethod.POST)
-    public void textPost(@RequestBody Person  bean) {
-        personMapper.insert(bean);
+    public int textPost(@RequestBody Person  bean) {
+        int m = 1;
+        try{
+            personMapper.insert(bean);
+        }catch (Exception e){
+            m = 0;
+        }
+        return m;
     }
 }
